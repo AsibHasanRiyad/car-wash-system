@@ -20,7 +20,7 @@ const getAllUser = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User is created",
+    message: "Sll User is retrieved",
     data: result,
   });
 });
