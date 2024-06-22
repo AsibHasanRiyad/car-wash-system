@@ -12,7 +12,11 @@ router.post(
 );
 // get all services
 router.get("/", ServiceController.getAllServices);
-// get single services
+// get single service
+router.get("/:id", ServiceController.getSingleServices);
+// delete single service
+router.patch("/:id", ServiceController.deleteSingleService);
+// update single service
 router.get("/:id", ServiceController.getSingleServices);
 
 export const ServiceRoutes = router;

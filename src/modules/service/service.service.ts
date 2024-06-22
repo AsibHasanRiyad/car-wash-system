@@ -15,8 +15,18 @@ const getSingleServices = async (id: string) => {
   return result;
 };
 
+const deleteService = async (id: string) => {
+  const result = await ServiceModel.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    { new: true, runValidators: true }
+  );
+  return result;
+};
+
 export const Services = {
   createServiceIntoDB,
   getAllServices,
   getSingleServices,
+  deleteService,
 };

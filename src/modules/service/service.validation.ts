@@ -9,7 +9,17 @@ const createServiceValidationSchema = z.object({
     isDeleted: z.boolean(),
   }),
 });
+const updateServiceValidationSchema = z.object({
+  body: z.object({
+    name: z.string().optional(),
+    description: z.string().optional(),
+    price: z.number().optional(),
+    duration: z.number().optional(),
+    isDeleted: z.boolean().optional(),
+  }),
+});
 
 export const ServiceValidation = {
   createServiceValidationSchema,
+  updateServiceValidationSchema,
 };
