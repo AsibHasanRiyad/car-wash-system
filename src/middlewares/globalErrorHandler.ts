@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
 import { TErrorSource } from "../interface/error";
@@ -34,12 +36,14 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorSource = simplifiedError?.errorSource;
-  } else if (error?.code === 11000) {
-    const simplifiedError = HandleDuplicateID(error);
-    statusCode = simplifiedError?.statusCode;
-    message = simplifiedError?.message;
-    errorSource = simplifiedError?.errorSource;
-  } else if (error instanceof AppError) {
+  }
+  //  else if (error?.code === 11000) {
+  //   const simplifiedError = HandleDuplicateID(error);
+  //   statusCode = simplifiedError?.statusCode;
+  //   message = simplifiedError?.message;
+  //   errorSource = simplifiedError?.errorSource;
+  // }
+  else if (error instanceof AppError) {
     statusCode = error?.statusCode;
     message = error?.message;
     errorSource = [

@@ -1,8 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TErrorSource, TGenericErrorResponse } from "../interface/error";
 
 const HandleDuplicateID = (error: any): TGenericErrorResponse => {
   const matches = error.message.match(/"([^"]+)"/);
-  const extractedMessage = matches[1];
+  let extractedMessage = "duplicate value";
+
+  if (matches && matches[1]) {
+    extractedMessage = matches[1];
+  }
 
   const errorSource: TErrorSource = [
     {
@@ -13,7 +18,7 @@ const HandleDuplicateID = (error: any): TGenericErrorResponse => {
   const statusCode = 400;
   return {
     statusCode,
-    message: "Property  Already exist",
+    message: "Property Already exist",
     errorSource,
   };
 };
