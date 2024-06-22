@@ -15,6 +15,14 @@ const getSingleServices = async (id: string) => {
   return result;
 };
 
+const updateService = async (id: string, payload: Partial<TService>) => {
+  const result = await ServiceModel.findByIdAndUpdate(id, payload, {
+    new: true,
+    runValidators: true,
+  });
+  return result;
+};
+
 const deleteService = async (id: string) => {
   const result = await ServiceModel.findByIdAndUpdate(
     id,
@@ -29,4 +37,5 @@ export const Services = {
   getAllServices,
   getSingleServices,
   deleteService,
+  updateService,
 };

@@ -15,8 +15,12 @@ router.get("/", ServiceController.getAllServices);
 // get single service
 router.get("/:id", ServiceController.getSingleServices);
 // delete single service
-router.patch("/:id", ServiceController.deleteSingleService);
+router.delete("/:id", ServiceController.deleteSingleService);
 // update single service
-router.get("/:id", ServiceController.getSingleServices);
+router.patch(
+  "/:id",
+  validateRequest(ServiceValidation.updateServiceValidationSchema),
+  ServiceController.updateSingleService
+);
 
 export const ServiceRoutes = router;
