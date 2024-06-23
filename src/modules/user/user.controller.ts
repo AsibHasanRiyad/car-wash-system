@@ -4,6 +4,7 @@ import catchAsync from "../../utils/catchAsync";
 import { UserServices } from "./user.service";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
+import config from "../../config";
 
 const createUser: RequestHandler = catchAsync(async (req, res, next) => {
   const userData = req.body;
@@ -28,6 +29,10 @@ const getAllUser = catchAsync(async (req, res) => {
 const loginUser = catchAsync(async (req, res) => {
   const result = await UserServices.loginUser(req.body);
   const { accessToken: token, user } = result;
+  res.cookie("accessToken", token, {
+    secure: config.node_env === "production",
+    httpOnly: true,
+  });
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

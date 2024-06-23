@@ -15,6 +15,9 @@ const createBookings = async (payload: TBooking) => {
   if (!customer) {
     throw new AppError(httpStatus.BAD_REQUEST, "User Does not exist");
   }
+  if (customer.role === "admin") {
+    throw new AppError(httpStatus.BAD_REQUEST, "Admin can not book a service");
+  }
   if (!service) {
     throw new AppError(httpStatus.BAD_REQUEST, "Service Does not exist");
   }
@@ -31,12 +34,17 @@ const createBookings = async (payload: TBooking) => {
   }
   //   update isBooked status
   const isBooked = await SlotModel.findOneAndUpdate({ isBooked: "booked" });
-  const result = await BookingModel.create(payload);
+  const result = (
+    await (await BookingModel.create(payload)).populate("service")
+  ).populate("slot");
   return result;
 };
 
 const getAllBookings = async () => {
-  const result = await BookingModel.find();
+  const result = await BookingModel.find()
+    .populate("customer")
+    .populate("service")
+    .populate("slot");
   return result;
 };
 const getMyBookings = async () => {
