@@ -9,5 +9,7 @@ router.post(
   validateRequest(BookingsValidation.createBookings),
   BookingControllers.createBookings
 );
+router.get("/", BookingControllers.getAllBookings);
+router.get("/my-bookings", BookingControllers.getMyBookings);
 
 export const BookingRoute = router;

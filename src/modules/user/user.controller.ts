@@ -11,7 +11,7 @@ const createUser: RequestHandler = catchAsync(async (req, res, next) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User is created",
+    message: "User registered successfully",
     data: result,
   });
 });
@@ -20,12 +20,24 @@ const getAllUser = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Sll User is retrieved",
+    message: "All User is retrieved",
     data: result,
+  });
+});
+
+const loginUser = catchAsync(async (req, res) => {
+  const result = await UserServices.loginUser(req.body);
+  const { accessToken, user } = result;
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User logged in successfully",
+    data: { accessToken, user },
   });
 });
 
 export const UserController = {
   createUser,
   getAllUser,
+  loginUser,
 };

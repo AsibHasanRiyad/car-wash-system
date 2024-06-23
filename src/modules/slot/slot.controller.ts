@@ -11,7 +11,7 @@ const createSlot: RequestHandler = catchAsync(async (req, res, next) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Slot is created",
+    message: "Slots created successfully",
     data: result,
   });
 });
@@ -22,7 +22,7 @@ const getAllAvailableSlots = catchAsync(async (req, res, next) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "All The Slot is retrieved",
+    message: "Available slots retrieved successfully",
     data: result,
   });
 });

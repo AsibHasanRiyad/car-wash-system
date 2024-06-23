@@ -11,11 +11,32 @@ const createBookings: RequestHandler = catchAsync(async (req, res, next) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Congratulation !! This slot is booked for you",
+    message: "Booking successful",
+    data: result,
+  });
+});
+
+const getAllBookings = catchAsync(async (req, res) => {
+  const result = await BookingServices.getAllBookings();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "All bookings retrieved successfully",
+    data: result,
+  });
+});
+const getMyBookings = catchAsync(async (req, res) => {
+  const result = await BookingServices.getMyBookings();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User bookings retrieved successfully",
     data: result,
   });
 });
 
 export const BookingControllers = {
   createBookings,
+  getAllBookings,
+  getMyBookings,
 };

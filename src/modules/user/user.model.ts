@@ -20,6 +20,7 @@ export const userSchema = new Schema<TUser, TUserModel>(
       type: String,
       required: true,
       maxlength: [20, "'Password can not be more than 20 character'"],
+      select: false,
     },
     phone: {
       type: String,
@@ -53,5 +54,16 @@ userSchema.post("save", function (doc, next) {
   doc.password = "";
   next();
 });
+
+userSchema.statics.isUserExistByCustomEmail = async function (email: string) {
+  return await UserModel.findOne({ email }).select("+password");
+};
+
+userSchema.statics.isPasswordMatched = async function (
+  plainTextPassword,
+  hashedPassword
+) {
+  return await bcrypt.compare(plainTextPassword, hashedPassword);
+};
 
 export const UserModel = model<TUser, TUserModel>("User", userSchema);

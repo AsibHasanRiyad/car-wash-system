@@ -35,6 +35,17 @@ const createBookings = async (payload: TBooking) => {
   return result;
 };
 
+const getAllBookings = async () => {
+  const result = await BookingModel.find();
+  return result;
+};
+const getMyBookings = async () => {
+  const result = await BookingModel.find();
+  return result;
+};
+
 export const BookingServices = {
   createBookings,
+  getAllBookings,
+  getMyBookings,
 };
