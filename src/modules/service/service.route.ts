@@ -21,6 +21,7 @@ router.delete("/:id", ServiceController.deleteSingleService);
 // update single service
 router.patch(
   "/:id",
+  auth("admin"),
   validateRequest(ServiceValidation.updateServiceValidationSchema),
   ServiceController.updateSingleService
 );

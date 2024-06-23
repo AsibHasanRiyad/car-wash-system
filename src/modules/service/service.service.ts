@@ -1,3 +1,5 @@
+import httpStatus from "http-status";
+import AppError from "../../errors/AppError";
 import { TService } from "./service.interface";
 import { ServiceModel } from "./service.model";
 
@@ -11,11 +13,19 @@ const getAllServices = async () => {
   return result;
 };
 const getSingleServices = async (id: string) => {
+  const isServiceExist = await ServiceModel.findById(id);
+  if (!isServiceExist) {
+    throw new AppError(httpStatus.NOT_FOUND, "Service not found");
+  }
   const result = await ServiceModel.findById(id);
   return result;
 };
 
 const updateService = async (id: string, payload: Partial<TService>) => {
+  const isServiceExist = await ServiceModel.findById(id);
+  if (!isServiceExist) {
+    throw new AppError(httpStatus.NOT_FOUND, "Service not found");
+  }
   const result = await ServiceModel.findByIdAndUpdate(id, payload, {
     new: true,
     runValidators: true,
@@ -24,6 +34,10 @@ const updateService = async (id: string, payload: Partial<TService>) => {
 };
 
 const deleteService = async (id: string) => {
+  const isServiceExist = await ServiceModel.findById(id);
+  if (!isServiceExist) {
+    throw new AppError(httpStatus.NOT_FOUND, "Service not found");
+  }
   const result = await ServiceModel.findByIdAndUpdate(
     id,
     { isDeleted: true },

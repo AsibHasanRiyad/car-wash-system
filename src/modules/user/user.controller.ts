@@ -27,12 +27,12 @@ const getAllUser = catchAsync(async (req, res) => {
 
 const loginUser = catchAsync(async (req, res) => {
   const result = await UserServices.loginUser(req.body);
-  const { accessToken, user } = result;
+  const { accessToken: token, user } = result;
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "User logged in successfully",
-    data: { accessToken, user },
+    data: { token, user },
   });
 });
 
