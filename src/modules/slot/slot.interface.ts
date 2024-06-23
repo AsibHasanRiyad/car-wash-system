@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 
 export type TSlot = {
-  service: Types.ObjectId;
+  serviceId: Types.ObjectId;
   date: Date;
   startTime: string;
   endTime: string;
