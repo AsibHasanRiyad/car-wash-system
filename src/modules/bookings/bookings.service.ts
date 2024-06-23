@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import httpStatus from "http-status";
 import AppError from "../../errors/AppError";
@@ -47,8 +48,11 @@ const getAllBookings = async () => {
     .populate("slot");
   return result;
 };
-const getMyBookings = async () => {
-  const result = await BookingModel.find();
+const getMyBookings = async (customerId: any) => {
+  const result = await BookingModel.find({ customer: customerId })
+    .populate("customer")
+    .populate("service")
+    .populate("slot");
   return result;
 };
 
