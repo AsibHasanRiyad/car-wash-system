@@ -8,7 +8,6 @@ const config_1 = __importDefault(require("../config"));
 const HandelZodError_1 = __importDefault(require("../errors/HandelZodError"));
 const HandelMongooseValidationError_1 = __importDefault(require("../errors/HandelMongooseValidationError"));
 const HandelCastError_1 = __importDefault(require("../errors/HandelCastError"));
-const HandelDuplicateID_1 = __importDefault(require("../errors/HandelDuplicateID"));
 const AppError_1 = __importDefault(require("../errors/AppError"));
 const globalErrorHandler = (error, req, res, next) => {
     let statusCode = 500;
@@ -37,12 +36,12 @@ const globalErrorHandler = (error, req, res, next) => {
         message = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.message;
         errorSource = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSource;
     }
-    else if ((error === null || error === void 0 ? void 0 : error.code) === 11000) {
-        const simplifiedError = (0, HandelDuplicateID_1.default)(error);
-        statusCode = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.statusCode;
-        message = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.message;
-        errorSource = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSource;
-    }
+    //  else if (error?.code === 11000) {
+    //   const simplifiedError = HandleDuplicateID(error);
+    //   statusCode = simplifiedError?.statusCode;
+    //   message = simplifiedError?.message;
+    //   errorSource = simplifiedError?.errorSource;
+    // }
     else if (error instanceof AppError_1.default) {
         statusCode = error === null || error === void 0 ? void 0 : error.statusCode;
         message = error === null || error === void 0 ? void 0 : error.message;
