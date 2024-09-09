@@ -37,7 +37,9 @@ const createSlotsIntoDB = async (payload: TSlot) => {
   if (totalAvailableTime % slotDuration !== 0) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      `Time range is not divisible by the slot duration ${slotDuration}`
+      `Time range is not divisible by the slot duration ${
+        slotDuration / 60
+      } hours`
     );
   }
 
