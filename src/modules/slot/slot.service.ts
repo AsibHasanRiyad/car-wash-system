@@ -14,26 +14,50 @@ const createSlotsIntoDB = async (payload: TSlot) => {
   } = payload;
 
   const isServiceExist = await ServiceModel.findById(serviceId);
+  // console.log(isServiceExist);
   if (!isServiceExist) {
     throw new AppError(httpStatus.BAD_REQUEST, "Service Does not exist");
   }
+  const slotDuration = isServiceExist.duration;
 
   const [startHour, startMinute] = startTime.split(":").map(Number);
   const [endHour, endMinute] = endTime.split(":").map(Number);
   const startTimeInMinutes = startHour * 60 + startMinute;
   const endTimeInMinutes = endHour * 60 + endMinute;
 
+  const totalAvailableTime = endTimeInMinutes - startTimeInMinutes;
+
+  if (totalAvailableTime < slotDuration) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Time range is less than the slot duration"
+    );
+  }
+
+  if (totalAvailableTime % slotDuration !== 0) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      `Time range is not divisible by the slot duration ${slotDuration}`
+    );
+  }
+
   const slots: TSlot[] = [];
 
-  for (let time = startTimeInMinutes; time < endTimeInMinutes; time += 60) {
+  for (
+    let time = startTimeInMinutes;
+    time < endTimeInMinutes;
+    time += slotDuration
+  ) {
     const slotStartHour = Math.floor(time / 60)
       .toString()
       .padStart(2, "0");
     const slotStartMinute = (time % 60).toString().padStart(2, "0");
-    const slotEndHour = Math.floor((time + 60) / 60)
+    const slotEndHour = Math.floor((time + slotDuration) / 60)
       .toString()
       .padStart(2, "0");
-    const slotEndMinute = ((time + 60) % 60).toString().padStart(2, "0");
+    const slotEndMinute = ((time + slotDuration) % 60)
+      .toString()
+      .padStart(2, "0");
 
     slots.push({
       serviceId,
