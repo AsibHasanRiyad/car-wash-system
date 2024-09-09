@@ -34,7 +34,7 @@ const createBookings = async (payload: TBooking) => {
     );
   }
   //   update isBooked status
-  const isBooked = await SlotModel.findOneAndUpdate({ isBooked: "booked" });
+  await SlotModel.findByIdAndUpdate(slot, { isBooked: "booked" });
   const result = (
     await (await BookingModel.create(payload)).populate("service")
   ).populate("slot");
