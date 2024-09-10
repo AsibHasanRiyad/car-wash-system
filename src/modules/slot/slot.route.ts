@@ -13,4 +13,10 @@ router.post(
 );
 
 router.get("/availability", SlotController.getAllAvailableSlots);
+router.patch(
+  "/:id",
+  auth("admin"),
+
+  SlotController.updateSingleSlot
+);
 export const SlotRoutes = router;

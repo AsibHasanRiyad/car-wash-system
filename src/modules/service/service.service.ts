@@ -9,7 +9,7 @@ const createServiceIntoDB = async (payload: TService) => {
 };
 
 const getAllServices = async () => {
-  const result = await ServiceModel.find();
+  const result = await ServiceModel.find({ isDeleted: { $ne: true } });
   return result;
 };
 const getSingleServices = async (id: string) => {
