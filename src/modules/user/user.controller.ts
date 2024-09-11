@@ -35,9 +35,21 @@ const loginUser = catchAsync(async (req, res) => {
     data: { token, user },
   });
 });
+const updateUser = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await UserServices.updateUserRole(id, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User role update successfully",
+    data: result,
+  });
+});
 
 export const UserController = {
   createUser,
   getAllUser,
   loginUser,
+  updateUser,
 };

@@ -15,6 +15,25 @@ const createUserIntoDB = async (payload: TUser) => {
   const { password, ...userWithoutPassword } = result.toObject();
   return userWithoutPassword;
 };
+const updateUserRole = async (id: string, payload: Partial<TUser>) => {
+  // Check if the user exists
+  const user = await UserModel.findById(id);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  // Check if the new status is valid
+  if (!["user", "admin"].includes(payload.role as string)) {
+    throw new AppError(httpStatus.BAD_REQUEST, "Invalid status");
+  }
+
+  // Update role
+  const result = await UserModel.findByIdAndUpdate(id, payload, {
+    new: true,
+    runValidators: true,
+  });
+  return result;
+};
 
 const getAllUserFromDB = async () => {
   const result = await UserModel.find();
@@ -51,4 +70,5 @@ export const UserServices = {
   createUserIntoDB,
   getAllUserFromDB,
   loginUser,
+  updateUserRole,
 };
