@@ -13,6 +13,7 @@ router.post(
 );
 
 router.get("/availability", SlotController.getAllAvailableSlots);
+router.get("/:id", SlotController.getSingleSlots);
 router.patch(
   "/:id",
   auth("admin"),

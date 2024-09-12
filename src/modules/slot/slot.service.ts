@@ -81,6 +81,14 @@ const getAllAvailableSlots = async (query: Record<string, unknown>) => {
   const result = await searchQuery.find(query).populate("serviceId");
   return result;
 };
+const getSingleSlot = async (id: string) => {
+  const isSlotExist = await SlotModel.findById(id);
+  if (!isSlotExist) {
+    throw new AppError(httpStatus.NOT_FOUND, "Slot not found");
+  }
+  const result = await SlotModel.findById(id);
+  return result;
+};
 const updateSlotStatus = async (
   slotId: string,
   newStatus: "available" | "canceled"
@@ -110,4 +118,5 @@ export const SlotServices = {
   createSlotsIntoDB,
   getAllAvailableSlots,
   updateSlotStatus,
+  getSingleSlot,
 };
