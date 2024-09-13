@@ -46,10 +46,7 @@ const createBookings = async (payload: TBooking) => {
   };
   const paymentSession = await initiatePayment({ paymentData });
   //   update transactionId
-  await SlotModel.findOneAndUpdate(
-    { transactionId },
-    { transactionId: transactionId }
-  );
+  await SlotModel.findByIdAndUpdate(slot._id, { transactionId });
   const result = (
     await (await BookingModel.create(payload)).populate("service")
   ).populate("slot");

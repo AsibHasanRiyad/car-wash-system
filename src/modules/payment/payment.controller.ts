@@ -3,9 +3,11 @@ import { PaymentService } from "./payment.service";
 
 const confirmationController = async (req: Request, res: Response) => {
   const transactionId = req.query.transactionId;
+  // console.log(transactionId);
   const result = await PaymentService.confirmationService(
     transactionId as string
   );
+  console.log(result);
   res.send(`<!DOCTYPE html>
 <html lang="en">
 <head>

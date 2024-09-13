@@ -1,12 +1,13 @@
 import { SlotModel } from "../slot/slot.model";
 
 const confirmationService = async (transactionId: string) => {
-  const result = await SlotModel.findOneAndDelete(
+  //   console.log(transactionId, "inside service");
+  const result = await SlotModel.findOneAndUpdate(
     { transactionId },
-    {
-      isBooked: "booked",
-    }
+    { isBooked: "booked" },
+    { new: true }
   );
+  //   console.log(result);
   return result;
 };
 
