@@ -12,6 +12,10 @@ const slotSchema = new Schema<TSlot>(
       type: Date,
       required: [true, "Date is required"],
     },
+    transactionId: {
+      type: String,
+      required: false,
+    },
     startTime: {
       type: String,
       required: [true, "Start time is required"],

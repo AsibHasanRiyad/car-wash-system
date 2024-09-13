@@ -10,6 +10,7 @@ const createSlotsIntoDB = async (payload: TSlot) => {
     date,
     startTime,
     endTime,
+    transactionId = "",
     isBooked = "available",
   } = payload;
 
@@ -67,6 +68,7 @@ const createSlotsIntoDB = async (payload: TSlot) => {
       startTime: `${slotStartHour}:${slotStartMinute}`,
       endTime: `${slotEndHour}:${slotEndMinute}`,
       isBooked,
+      transactionId,
     });
   }
 

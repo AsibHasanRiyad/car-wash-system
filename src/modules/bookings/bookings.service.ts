@@ -7,6 +7,7 @@ import { TBooking } from "./bookings.interface";
 import { BookingModel } from "./bookings.model";
 import { ServiceModel } from "../service/service.model";
 import { SlotModel } from "../slot/slot.model";
+import { initiatePayment } from "../payment/payment.module";
 
 const createBookings = async (payload: TBooking) => {
   // validation
@@ -33,12 +34,26 @@ const createBookings = async (payload: TBooking) => {
       "This slot is not available , Please select another slot"
     );
   }
-  //   update isBooked status
-  await SlotModel.findByIdAndUpdate(slot, { isBooked: "booked" });
+
+  const transactionId = `TXN-${Date.now()}`;
+  const paymentData = {
+    transactionId,
+    amount: service.price,
+    name: customer.name,
+    email: customer.email,
+    address: customer.address,
+    phone: customer.phone,
+  };
+  const paymentSession = await initiatePayment({ paymentData });
+  //   update transactionId
+  await SlotModel.findOneAndUpdate(
+    { transactionId },
+    { transactionId: transactionId }
+  );
   const result = (
     await (await BookingModel.create(payload)).populate("service")
   ).populate("slot");
-  return result;
+  return paymentSession;
 };
 
 const getAllBookings = async () => {
