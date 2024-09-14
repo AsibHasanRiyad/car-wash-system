@@ -14,11 +14,12 @@ const createBookings = async (payload: TBooking) => {
   const customer = await UserModel.findById(payload.customer);
   const service = await ServiceModel.findById(payload.service);
   const slot = await SlotModel.findById(payload.slot);
+
   if (!customer) {
     throw new AppError(httpStatus.BAD_REQUEST, "User Does not exist");
   }
   if (customer.role === "admin") {
-    throw new AppError(httpStatus.BAD_REQUEST, "Admin can not book a service");
+    throw new AppError(httpStatus.BAD_REQUEST, "Admin cannot book a service");
   }
   if (!service) {
     throw new AppError(httpStatus.BAD_REQUEST, "Service Does not exist");
@@ -29,15 +30,24 @@ const createBookings = async (payload: TBooking) => {
   if (slot.isBooked === "canceled") {
     throw new AppError(httpStatus.BAD_REQUEST, "Slot is canceled");
   }
-  //   check if slot is already booked
-  const slotStatus = slot.isBooked;
-  if (slotStatus === "booked") {
+
+  // Check if a booking already exists in this slot
+  const existingBooking = await BookingModel.findOne({ slot: slot._id });
+  if (existingBooking) {
+    // Delete the existing booking
+    await BookingModel.findByIdAndDelete(existingBooking._id);
+    // Optionally, you might also want to update the slot status here if needed
+  }
+
+  // Check the slot status after deletion
+  if (slot.isBooked === "booked") {
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      "This slot is not available , Please select another slot"
+      "This slot is not available, please select another slot"
     );
   }
 
+  // Proceed with creating a new booking
   const transactionId = `TXN-${Date.now()}`;
   const paymentData = {
     transactionId,
@@ -48,11 +58,15 @@ const createBookings = async (payload: TBooking) => {
     phone: customer.phone,
   };
   const paymentSession = await initiatePayment({ paymentData });
-  //   update transactionId
+
+  // Update the slot with the transaction ID
   await SlotModel.findByIdAndUpdate(slot._id, { transactionId });
+
+  // Create the new booking
   const result = (
     await (await BookingModel.create(payload)).populate("service")
   ).populate("slot");
+
   return paymentSession;
 };
 
