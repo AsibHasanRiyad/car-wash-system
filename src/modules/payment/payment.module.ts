@@ -18,8 +18,9 @@ export const initiatePayment = async ({
     store_id: config.store_id,
     signature_key: config.signature_key,
     tran_id: paymentData.transactionId,
-    success_url: `https://cleancarco.vercel.app/api/payment/confirmation?transactionId=${paymentData.transactionId}`,
-    fail_url: "https://cleancarco.vercel.app/api/payment/payment-failed",
+    success_url: `https://car-washing-system-server-cyan.vercel.app/api/payment/confirmation?transactionId=${paymentData.transactionId}`,
+    fail_url:
+      "https://car-washing-system-server-cyan.vercel.app/api/payment/payment-failed",
     cancel_url: "/",
     amount: paymentData.amount,
     currency: "BDT",
