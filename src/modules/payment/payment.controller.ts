@@ -85,7 +85,7 @@ const confirmationController = async (req: Request, res: Response) => {
     <h3 class="title">Payment Done!</h3>
     <p class="description">Thank you for completing your secure online payment.</p>
     <p>Have a great day!</p>
-    <a href="http://localhost:5173/dashboard" class="button">Go to Dashboard</a>
+    <a href="https://cleancarco.vercel.app/dashboard/upcoming-bookings" class="button">Go to Dashboard</a>
   </div>
 </body>
 </html>
@@ -170,7 +170,7 @@ const paymentFailedController = async (req: Request, res: Response) => {
     <h3 class="title">Payment Failed!</h3>
     <p class="description">Unfortunately, your payment could not be processed.</p>
     <p>Please try again or contact support.</p>
-    <a href="http://localhost:5173" class="button">Home</a>
+    <a href="https://cleancarco.vercel.app" class="button">Home</a>
   </div>
 </body>
 </html>
