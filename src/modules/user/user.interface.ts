@@ -8,7 +8,7 @@ export type TUser = {
   email: string;
   password: string;
   phone: string;
-  role: TUserRole;
+  role: string;
   address: string;
 };
 

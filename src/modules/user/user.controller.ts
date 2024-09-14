@@ -42,7 +42,18 @@ const updateUser = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User role update successfully",
+    message: "User role updated successfully",
+    data: result,
+  });
+});
+const updateUserProfile = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await UserServices.updateUserProfile(id, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User profile updated successfully",
     data: result,
   });
 });
@@ -52,4 +63,5 @@ export const UserController = {
   getAllUser,
   loginUser,
   updateUser,
+  updateUserProfile,
 };

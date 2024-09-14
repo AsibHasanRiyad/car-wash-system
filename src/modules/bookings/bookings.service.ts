@@ -26,6 +26,9 @@ const createBookings = async (payload: TBooking) => {
   if (!slot) {
     throw new AppError(httpStatus.BAD_REQUEST, "Slot Does not exist");
   }
+  if (slot.isBooked === "canceled") {
+    throw new AppError(httpStatus.BAD_REQUEST, "Slot is canceled");
+  }
   //   check if slot is already booked
   const slotStatus = slot.isBooked;
   if (slotStatus === "booked") {
