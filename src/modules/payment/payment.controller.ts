@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response } from "express";
 import { PaymentService } from "./payment.service";
 
@@ -7,7 +8,7 @@ const confirmationController = async (req: Request, res: Response) => {
   const result = await PaymentService.confirmationService(
     transactionId as string
   );
-  console.log(result);
+  // console.log(result);
   res.send(`<!DOCTYPE html>
 <html lang="en">
 <head>
