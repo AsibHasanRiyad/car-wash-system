@@ -30,7 +30,7 @@ export const userSchema = new Schema<TUser, TUserModel>(
     role: {
       type: String,
       enum: ["admin", "user"],
-      required: true,
+      required: false,
     },
     address: {
       type: String,

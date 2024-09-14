@@ -34,6 +34,19 @@ const updateUserRole = async (id: string, payload: Partial<TUser>) => {
   });
   return result;
 };
+const updateUserProfile = async (id: string, payload: Partial<TUser>) => {
+  // Check if the user exists
+  const user = await UserModel.findById(id);
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+  // Update role
+  const result = await UserModel.findByIdAndUpdate(id, payload, {
+    new: true,
+  });
+  return result;
+};
 
 const getAllUserFromDB = async () => {
   const result = await UserModel.find();
@@ -71,4 +84,5 @@ export const UserServices = {
   getAllUserFromDB,
   loginUser,
   updateUserRole,
+  updateUserProfile,
 };
