@@ -26,8 +26,18 @@ const getAllRatings = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const getAverageRatings = catchAsync(async (req, res) => {
+  const result = await RatingService.averageRatings();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Average ratings retrieved successfully",
+    data: result,
+  });
+});
 
 export const RatingController = {
   createRatings,
   getAllRatings,
+  getAverageRatings,
 };

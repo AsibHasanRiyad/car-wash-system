@@ -10,8 +10,18 @@ const getAllRatings = async () => {
   const result = await RatingsModel.find();
   return result;
 };
+const averageRatings = async () => {
+  const ratings = await RatingsModel.find();
+  if (ratings.length === 0) {
+    return 0;
+  }
+  const totalRatings = ratings.reduce((acc, rating) => acc + rating.rating, 0);
+  const averageRating = totalRatings / ratings.length;
+  return averageRating;
+};
 
 export const RatingService = {
   createRatings,
   getAllRatings,
+  averageRatings,
 };
