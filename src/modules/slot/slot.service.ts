@@ -3,6 +3,7 @@ import AppError from "../../errors/AppError";
 import { ServiceModel } from "../service/service.model";
 import { TSlot } from "./slot.interface";
 import { SlotModel } from "./slot.model";
+import QueryBuilder from "../../utils/QueryBuilder";
 
 const createSlotsIntoDB = async (payload: TSlot) => {
   const {
@@ -78,10 +79,17 @@ const createSlotsIntoDB = async (payload: TSlot) => {
 
 const getAllAvailableSlots = async (query: Record<string, unknown>) => {
   const searchQuery = SlotModel.find({
-    // isBooked: { $ne: "booked" },
+    isBooked: { $ne: "booked" },
   });
   const result = await searchQuery.find(query).populate("serviceId");
   return result;
+};
+const getAllSlots = async (queryParams: Record<string, unknown>) => {
+  const slotQuery = new QueryBuilder(SlotModel.find(), queryParams);
+  slotQuery.search(["name"]).filter().sort().paginate().fields();
+  const result = await slotQuery.modelQuery.populate("serviceId");
+  const meta = await slotQuery.countTotal();
+  return { result, meta };
 };
 const getSingleSlot = async (id: string) => {
   const isSlotExist = await SlotModel.findById(id);
@@ -121,4 +129,5 @@ export const SlotServices = {
   getAllAvailableSlots,
   updateSlotStatus,
   getSingleSlot,
+  getAllSlots,
 };

@@ -8,6 +8,7 @@ import { BookingModel } from "./bookings.model";
 import { ServiceModel } from "../service/service.model";
 import { SlotModel } from "../slot/slot.model";
 import { initiatePayment } from "../payment/payment.module";
+import QueryBuilder from "../../utils/QueryBuilder";
 
 const createBookings = async (payload: TBooking) => {
   // validation
@@ -70,19 +71,36 @@ const createBookings = async (payload: TBooking) => {
   return paymentSession;
 };
 
-const getAllBookings = async () => {
-  const result = await BookingModel.find()
+const getAllBookings = async (queryParams: Record<string, unknown>) => {
+  const BookingQuery = new QueryBuilder(BookingModel.find(), queryParams);
+  BookingQuery.search(["name"]).filter().sort().paginate().fields();
+  const result = await BookingQuery.modelQuery
     .populate("customer")
     .populate("service")
     .populate("slot");
-  return result;
+  const meta = await BookingQuery.countTotal();
+  return { result, meta };
 };
-const getMyBookings = async (customerId: any) => {
-  const result = await BookingModel.find({ customer: customerId })
+const getMyBookings = async (
+  customerId: any,
+  queryParams: Record<string, unknown>
+) => {
+  // const result = await BookingModel.find({ customer: customerId })
+  //   .populate("customer")
+  //   .populate("service")
+  //   .populate("slot");
+  // return result;
+  const MyBookingQuery = new QueryBuilder(
+    BookingModel.find({ customer: customerId }),
+    queryParams
+  );
+  MyBookingQuery.search(["name"]).filter().sort().paginate().fields();
+  const result = await MyBookingQuery.modelQuery
     .populate("customer")
     .populate("service")
     .populate("slot");
-  return result;
+  const meta = await MyBookingQuery.countTotal();
+  return { result, meta };
 };
 
 export const BookingServices = {

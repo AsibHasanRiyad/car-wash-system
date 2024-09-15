@@ -5,6 +5,7 @@ import AppError from "../../errors/AppError";
 import { TUser, TUserLogin } from "./user.interface";
 import { UserModel } from "./user.model";
 import { createToken } from "../../middlewares/auth.utils";
+import QueryBuilder from "../../utils/QueryBuilder";
 
 // signup
 const createUserIntoDB = async (payload: TUser) => {
@@ -48,9 +49,12 @@ const updateUserProfile = async (id: string, payload: Partial<TUser>) => {
   return result;
 };
 
-const getAllUserFromDB = async () => {
-  const result = await UserModel.find();
-  return result;
+const getAllUserFromDB = async (queryParams: Record<string, unknown>) => {
+  const userQuery = new QueryBuilder(UserModel.find(), queryParams);
+  userQuery.search(["name"]).filter().sort().paginate().fields();
+  const result = await userQuery.modelQuery;
+  const meta = await userQuery.countTotal();
+  return { result, meta };
 };
 
 // login

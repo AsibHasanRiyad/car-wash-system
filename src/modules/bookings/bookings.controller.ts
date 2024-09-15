@@ -23,7 +23,8 @@ const createBookings: RequestHandler = catchAsync(async (req, res, next) => {
 });
 
 const getAllBookings = catchAsync(async (req, res) => {
-  const result = await BookingServices.getAllBookings();
+  const queryParams = req.query;
+  const result = await BookingServices.getAllBookings(queryParams);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -32,6 +33,7 @@ const getAllBookings = catchAsync(async (req, res) => {
   });
 });
 const getMyBookings = catchAsync(async (req, res) => {
+  const queryParams = req.query;
   const token = req.headers.authorization;
   const decoded = jwt.verify(
     token as string,
@@ -40,7 +42,7 @@ const getMyBookings = catchAsync(async (req, res) => {
   const { email } = decoded;
   const customer = await UserModel.findOne({ email: email });
   const customerId = (customer as TUser)._id;
-  const result = await BookingServices.getMyBookings(customerId);
+  const result = await BookingServices.getMyBookings(customerId, queryParams);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
