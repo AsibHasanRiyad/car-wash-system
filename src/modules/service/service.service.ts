@@ -2,15 +2,19 @@ import httpStatus from "http-status";
 import AppError from "../../errors/AppError";
 import { TService } from "./service.interface";
 import { ServiceModel } from "./service.model";
+import QueryBuilder from "../../utils/QueryBuilder";
 
 const createServiceIntoDB = async (payload: TService) => {
   const result = await ServiceModel.create(payload);
   return result;
 };
 
-const getAllServices = async () => {
-  const result = await ServiceModel.find({ isDeleted: { $ne: true } });
-  return result;
+const getAllServices = async (queryParams: Record<string, unknown>) => {
+  const serviceQuery = new QueryBuilder(ServiceModel.find(), queryParams);
+  serviceQuery.search(["name"]).filter().sort().paginate().fields();
+  const result = await serviceQuery.modelQuery;
+  const meta = await serviceQuery.countTotal();
+  return { result, meta };
 };
 const getSingleServices = async (id: string) => {
   const isServiceExist = await ServiceModel.findById(id);

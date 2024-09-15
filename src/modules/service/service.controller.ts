@@ -17,12 +17,14 @@ const createService: RequestHandler = catchAsync(async (req, res, next) => {
 });
 
 const getAllServices = catchAsync(async (req, res) => {
-  const result = await Services.getAllServices();
+  const queryParams = req.query;
+  const result = await Services.getAllServices(queryParams);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Services retrieved successfully",
-    data: result,
+    data: result.result,
+    meta: result.meta,
   });
 });
 const getSingleServices = catchAsync(async (req, res) => {
