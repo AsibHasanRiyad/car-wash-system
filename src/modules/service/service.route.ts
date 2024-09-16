@@ -17,7 +17,7 @@ router.get("/", ServiceController.getAllServices);
 // get single service
 router.get("/:id", ServiceController.getSingleServices);
 // delete single service
-router.delete("/:id", ServiceController.deleteSingleService);
+router.delete("/:id", auth("admin"), ServiceController.deleteSingleService);
 // update single service
 router.patch(
   "/:id",
