@@ -1,13 +1,9 @@
-Here’s a more concise **README.md** for your project:
-
 ---
-
 # Car Wash Booking System
 
 ## Overview
 
 A backend system for managing a car wash business. Features include user authentication, service booking, and slot management. Built using **TypeScript**, **Express.js**, **MongoDB**, and **Mongoose**.
-
 ---
 
 ## Features
