@@ -93,7 +93,7 @@ A backend system for managing a car wash business. Features include user authent
 
 ## Running Scripts
 
-- **Development**: `npm run dev`
+- **Development**: `npm run start:dev`
 - **Production**: `npm start`
 - **Linting**: `npm run lint`
 
