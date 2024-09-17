@@ -16,12 +16,14 @@ const createUser: RequestHandler = catchAsync(async (req, res, next) => {
   });
 });
 const getAllUser = catchAsync(async (req, res) => {
-  const result = await UserServices.getAllUserFromDB();
+  const queryParams = req.query;
+  const result = await UserServices.getAllUserFromDB(queryParams);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "All User is retrieved",
-    data: result,
+    data: result.result,
+    meta: result.meta,
   });
 });
 
