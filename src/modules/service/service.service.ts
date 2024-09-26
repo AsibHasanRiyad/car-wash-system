@@ -10,7 +10,10 @@ const createServiceIntoDB = async (payload: TService) => {
 };
 
 const getAllServices = async (queryParams: Record<string, unknown>) => {
-  const serviceQuery = new QueryBuilder(ServiceModel.find(), queryParams);
+  const serviceQuery = new QueryBuilder(
+    ServiceModel.find({ isDeleted: false }),
+    queryParams
+  );
   serviceQuery.search(["name"]).filter().sort().paginate().fields();
   const result = await serviceQuery.modelQuery;
   const meta = await serviceQuery.countTotal();
